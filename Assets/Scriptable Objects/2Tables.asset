@@ -22,4 +22,7 @@ MonoBehaviour:
   - questionText: 2 x 5
     answer: 10
     wrongOptions: 020000000500000007000000
+  - questionText: 2 x 6
+    answer: 12
+    wrongOptions: 020000000600000008000000
   totalTimeSeconds: 60

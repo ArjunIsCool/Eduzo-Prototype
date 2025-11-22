@@ -21,6 +21,8 @@ public class TablesManager : MonoBehaviour
 
     public RectTransform tableAnswerMiddlePos;
 
+    bool gameplayInProcess = false;
+
     public static TablesManager Instance;
 
     private void Awake()
@@ -34,6 +36,7 @@ public class TablesManager : MonoBehaviour
         }
 
         optionsHolderStartPos = optionsHolder.anchoredPosition;
+        HideOptions();
     }
 
     public void AddQuestion(QuestionSet.QuestionData questionData)
@@ -74,8 +77,11 @@ public class TablesManager : MonoBehaviour
         optionsHolder.DOAnchorPos(new Vector3(0f, -1000f, 0f), 1f).SetEase(Ease.OutBounce);
     }
 
+    public bool IsGameplayInProcess() { return gameplayInProcess; }
+
     public async void DisplayOptionsFeedback(string chosenOption, string correctAnswer)
     {
+        gameplayInProcess = true;
         foreach (Option optionObj in optionsObjs)
         {
             optionObj.optionButton.GetComponent<Button>().enabled = false;
@@ -122,6 +128,15 @@ public class TablesManager : MonoBehaviour
         HideOptions();
 
         await Task.Delay(1000);
+
+        if (GameplayManager.Instance.IsGameOver())
+        {
+            gameplayInProcess = false;
+            GameplayManager.Instance.EndGameplay();
+            return;
+        }
+
+        gameplayInProcess = false;
 
         foreach (Option optionObj in optionsObjs)
         {

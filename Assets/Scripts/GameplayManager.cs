@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -13,12 +14,18 @@ public class GameplayManager : MonoBehaviour
     public Sprite liveOn;
     public Sprite liveOff;
 
+    public EndCard endCard;
+
     int currentQuestion = -1;
     int currentLives = 3;
     int currentScore = 0;
     float currentTimeSeconds = 0;
 
     bool gameplayInitialized = false;
+    bool gameOver = false; //If we have lost game ONLY
+    enum GameOverReason { OUT_OF_LIVES, TIME_UP};
+
+    GameOverReason gameOverReason;
 
     public static GameplayManager Instance;
 
@@ -38,14 +45,19 @@ public class GameplayManager : MonoBehaviour
         InitializeGameplay();
     }
 
-    void InitializeGameplay()
+    async void InitializeGameplay()
     {
+        gameOver = false;
+
         currentQuestion = -1;
         currentScore = 0;
         currentLives = 3;
         currentTimeSeconds = questionSet.totalTimeSeconds;
         ResetLives();
         UpdateTimerUI();
+
+        await Task.Delay(1000);
+
         ShowNextQuestion();
 
         gameplayInitialized = true;
@@ -59,12 +71,29 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    public bool IsGameOver() { return gameOver; }
+
 
     private void Update()
     {
         if (!gameplayInitialized) return;
         currentTimeSeconds -= Time.deltaTime;
         UpdateTimerUI();
+
+        if (currentTimeSeconds <= 0f)
+        {
+            currentTimeSeconds = 0f;
+            UpdateTimerUI();
+
+            gameOver = true;
+            gameplayInitialized = false;
+
+            if (!TablesManager.Instance.IsGameplayInProcess())
+            {
+                gameOverReason = GameOverReason.TIME_UP;
+                EndGameplay();
+            }
+        }
     }
 
     void UpdateTimerUI()
@@ -84,6 +113,19 @@ public class GameplayManager : MonoBehaviour
     void LoseLife()
     {
         currentLives--;
+
+        if(currentLives <= 0)
+        {
+            gameOver = true;
+            gameplayInitialized = false;
+
+            if(!TablesManager.Instance.IsGameplayInProcess())
+            {
+                gameOverReason = GameOverReason.OUT_OF_LIVES;
+                EndGameplay();
+            }
+        }
+
         Transform lostLife = livesHolder.GetChild(currentLives);
         lostLife.DOShakeScale(0.5f).OnComplete(() =>
         {
@@ -98,21 +140,58 @@ public class GameplayManager : MonoBehaviour
 
     public void ShowNextQuestion()
     {
+        if (gameOver) return;
+        if(currentQuestion == questionSet.data.Count - 1)
+        {
+            gameplayInitialized = false;
+            EndGameplay();
+
+            return;
+        }
+
         currentQuestion++;
         TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
     }
 
+    public async void EndGameplay()
+    {
+        if (gameOver)
+        {
+            if (gameOverReason == GameOverReason.OUT_OF_LIVES)
+            {
+                endCard.DisplayMessage("OUT OF LIVES!");
+            } else if (gameOverReason == GameOverReason.TIME_UP)
+            {
+                endCard.DisplayMessage("TIME'S UP!");
+            }
+
+        }else
+        {
+            endCard.DisplayMessage("COMPLETED!");
+        }
+
+        await Task.Delay(2000);
+
+        UIManager.Instance.ShowEndScreenUI();
+
+        int totalScore = currentScore * currentLives;
+        int maxPossibleScore = questionSet.data.Count * 3;
+
+        EndUIManager.Instance.UpdateEndScreenInfo(!gameOver, totalScore, maxPossibleScore);
+    }
+
     public void SelectOption(TMP_Text selectedOption)
     {
-        if(selectedOption.text == questionSet.data[currentQuestion].answer.ToString())
+        TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString());
+
+
+        if (selectedOption.text == questionSet.data[currentQuestion].answer.ToString())
         {
             currentScore++;
         }else
         {
             LoseLife();
         }
-
-        TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString());
 
     }
 }
