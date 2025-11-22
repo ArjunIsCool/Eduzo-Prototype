@@ -14,4 +14,5 @@ public class QuestionSet : ScriptableObject
     }
 
     public List<QuestionData> data;
+    public int totalTimeSeconds;
 }

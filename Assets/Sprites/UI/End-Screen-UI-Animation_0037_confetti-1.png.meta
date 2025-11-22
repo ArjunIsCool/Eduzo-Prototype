@@ -1,0 +1,624 @@
+fileFormatVersion: 2
+guid: 6dab528a7125fd543b6f0dcd5d3cf821
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3470929595892758666
+    second: End-Screen-UI-Animation_0037_confetti-1_0
+  - first:
+      213: 1504540155849637464
+    second: End-Screen-UI-Animation_0037_confetti-1_1
+  - first:
+      213: 6471181516583854933
+    second: End-Screen-UI-Animation_0037_confetti-1_2
+  - first:
+      213: -2059639383272672437
+    second: End-Screen-UI-Animation_0037_confetti-1_3
+  - first:
+      213: -4861418839355489619
+    second: End-Screen-UI-Animation_0037_confetti-1_4
+  - first:
+      213: -6449918191314715221
+    second: End-Screen-UI-Animation_0037_confetti-1_5
+  - first:
+      213: 5160882969153739357
+    second: End-Screen-UI-Animation_0037_confetti-1_6
+  - first:
+      213: -9009248974072710514
+    second: End-Screen-UI-Animation_0037_confetti-1_7
+  - first:
+      213: 1757878551149484109
+    second: End-Screen-UI-Animation_0037_confetti-1_8
+  - first:
+      213: 8078042522882633218
+    second: End-Screen-UI-Animation_0037_confetti-1_9
+  - first:
+      213: -7536221876809893215
+    second: End-Screen-UI-Animation_0037_confetti-1_10
+  - first:
+      213: 7464942258246024745
+    second: End-Screen-UI-Animation_0037_confetti-1_11
+  - first:
+      213: -2067482133216662445
+    second: End-Screen-UI-Animation_0037_confetti-1_12
+  - first:
+      213: 2654350509805896298
+    second: End-Screen-UI-Animation_0037_confetti-1_13
+  - first:
+      213: -3693645289503715459
+    second: End-Screen-UI-Animation_0037_confetti-1_14
+  - first:
+      213: -5718970541984828071
+    second: End-Screen-UI-Animation_0037_confetti-1_15
+  - first:
+      213: 7042620086197620579
+    second: End-Screen-UI-Animation_0037_confetti-1_16
+  - first:
+      213: -546558034902602737
+    second: End-Screen-UI-Animation_0037_confetti-1_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_0
+      rect:
+        serializedVersion: 2
+        x: 445
+        y: 1706
+        width: 71
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6770c6c1ce7c4dfc0800000000000000
+      internalID: -3470929595892758666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_1
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 1804
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85e7ab3ec4331e410800000000000000
+      internalID: 1504540155849637464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_2
+      rect:
+        serializedVersion: 2
+        x: 1763
+        y: 1739
+        width: 54
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 553ed05bd414ec950800000000000000
+      internalID: 6471181516583854933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_3
+      rect:
+        serializedVersion: 2
+        x: 2393
+        y: 1756
+        width: 64
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b43b0a2b4e0ba63e0800000000000000
+      internalID: -2059639383272672437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1572
+        width: 51
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da203df8255c88cb0800000000000000
+      internalID: -4861418839355489619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_5
+      rect:
+        serializedVersion: 2
+        x: 2973
+        y: 1564
+        width: 50
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bad3b5004994d76a0800000000000000
+      internalID: -6449918191314715221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_6
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 1196
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a95c787b32f9740800000000000000
+      internalID: 5160882969153739357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_7
+      rect:
+        serializedVersion: 2
+        x: 3029
+        y: 1197
+        width: 96
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8af7578ac7b8f280800000000000000
+      internalID: -9009248974072710514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_8
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 873
+        width: 50
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d481b878a3d356810800000000000000
+      internalID: 1757878551149484109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_9
+      rect:
+        serializedVersion: 2
+        x: 3185
+        y: 897
+        width: 51
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20e6be010e8fa1070800000000000000
+      internalID: 8078042522882633218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_10
+      rect:
+        serializedVersion: 2
+        x: 2971
+        y: 751
+        width: 55
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1aaf734b126f96790800000000000000
+      internalID: -7536221876809893215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_11
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 547
+        width: 53
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92e7e83de6dc89760800000000000000
+      internalID: 7464942258246024745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_12
+      rect:
+        serializedVersion: 2
+        x: 3083
+        y: 475
+        width: 53
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35c672e24f3de43e0800000000000000
+      internalID: -2067482133216662445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_13
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 329
+        width: 96
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a628b5ea9b526d420800000000000000
+      internalID: 2654350509805896298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_14
+      rect:
+        serializedVersion: 2
+        x: 2962
+        y: 193
+        width: 63
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7f06d0dd298dbcc0800000000000000
+      internalID: -3693645289503715459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_15
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 12
+        width: 50
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 955321ca79222a0b0800000000000000
+      internalID: -5718970541984828071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_16
+      rect:
+        serializedVersion: 2
+        x: 1597
+        y: 0
+        width: 72
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36f07dda7a96cb160800000000000000
+      internalID: 7042620086197620579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: End-Screen-UI-Animation_0037_confetti-1_17
+      rect:
+        serializedVersion: 2
+        x: 2040
+        y: 36
+        width: 54
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0cae70fc5c3a68f0800000000000000
+      internalID: -546558034902602737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      End-Screen-UI-Animation_0037_confetti-1_0: -3470929595892758666
+      End-Screen-UI-Animation_0037_confetti-1_1: 1504540155849637464
+      End-Screen-UI-Animation_0037_confetti-1_10: -7536221876809893215
+      End-Screen-UI-Animation_0037_confetti-1_11: 7464942258246024745
+      End-Screen-UI-Animation_0037_confetti-1_12: -2067482133216662445
+      End-Screen-UI-Animation_0037_confetti-1_13: 2654350509805896298
+      End-Screen-UI-Animation_0037_confetti-1_14: -3693645289503715459
+      End-Screen-UI-Animation_0037_confetti-1_15: -5718970541984828071
+      End-Screen-UI-Animation_0037_confetti-1_16: 7042620086197620579
+      End-Screen-UI-Animation_0037_confetti-1_17: -546558034902602737
+      End-Screen-UI-Animation_0037_confetti-1_2: 6471181516583854933
+      End-Screen-UI-Animation_0037_confetti-1_3: -2059639383272672437
+      End-Screen-UI-Animation_0037_confetti-1_4: -4861418839355489619
+      End-Screen-UI-Animation_0037_confetti-1_5: -6449918191314715221
+      End-Screen-UI-Animation_0037_confetti-1_6: 5160882969153739357
+      End-Screen-UI-Animation_0037_confetti-1_7: -9009248974072710514
+      End-Screen-UI-Animation_0037_confetti-1_8: 1757878551149484109
+      End-Screen-UI-Animation_0037_confetti-1_9: 8078042522882633218
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
