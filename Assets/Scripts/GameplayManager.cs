@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -16,6 +17,8 @@ public class GameplayManager : MonoBehaviour
 
     public EndCard endCard;
 
+    public Button menuBtn;
+
     int currentQuestion = -1;
     int currentLives = 3;
     int currentScore = 0;
@@ -26,6 +29,8 @@ public class GameplayManager : MonoBehaviour
     enum GameOverReason { OUT_OF_LIVES, TIME_UP};
 
     GameOverReason gameOverReason;
+
+    CancellationTokenSource gameplayCTS;
 
     public static GameplayManager Instance;
 
@@ -40,14 +45,23 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
         InitializeGameplay();
     }
 
+    private void OnDisable()
+    {
+        gameplayCTS.Cancel();
+    }
+
     async void InitializeGameplay()
     {
+        gameplayCTS = new CancellationTokenSource();
+
         gameOver = false;
+
+        menuBtn.gameObject.SetActive(true);
 
         currentQuestion = -1;
         currentScore = 0;
@@ -55,6 +69,8 @@ public class GameplayManager : MonoBehaviour
         currentTimeSeconds = questionSet.totalTimeSeconds;
         ResetLives();
         UpdateTimerUI();
+
+        TablesManager.Instance.ResetTable();
 
         await Task.Delay(1000);
 
@@ -70,6 +86,7 @@ public class GameplayManager : MonoBehaviour
             life.GetComponent<Image>().sprite = liveOn;
         }
     }
+
 
     public bool IsGameOver() { return gameOver; }
 
@@ -155,6 +172,7 @@ public class GameplayManager : MonoBehaviour
 
     public async void EndGameplay()
     {
+        menuBtn.gameObject.SetActive(false);
         if (gameOver)
         {
             if (gameOverReason == GameOverReason.OUT_OF_LIVES)
@@ -182,7 +200,7 @@ public class GameplayManager : MonoBehaviour
 
     public void SelectOption(TMP_Text selectedOption)
     {
-        TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString());
+        TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString(), gameplayCTS.Token);
 
 
         if (selectedOption.text == questionSet.data[currentQuestion].answer.ToString())

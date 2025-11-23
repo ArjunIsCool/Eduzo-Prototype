@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using System.Threading;
 
 public class TablesManager : MonoBehaviour
 {
@@ -36,6 +37,27 @@ public class TablesManager : MonoBehaviour
         }
 
         optionsHolderStartPos = optionsHolder.anchoredPosition;
+        HideOptions();
+    }
+
+    public void ResetTable()
+    {
+        gameplayInProcess = false;
+
+        foreach (Transform question in questionsHolder)
+        {
+            Destroy(question.gameObject);
+        }
+        foreach (Transform answer in answersHolder)
+        {
+            Destroy(answer.gameObject);
+        }
+
+        foreach (Option option in optionsObjs)
+        {
+            option.ResetOptionBtn();
+        }
+
         HideOptions();
     }
 
@@ -79,7 +101,7 @@ public class TablesManager : MonoBehaviour
 
     public bool IsGameplayInProcess() { return gameplayInProcess; }
 
-    public async void DisplayOptionsFeedback(string chosenOption, string correctAnswer)
+    public async void DisplayOptionsFeedback(string chosenOption, string correctAnswer, CancellationToken cancellationToken)
     {
         gameplayInProcess = true;
         foreach (Option optionObj in optionsObjs)
@@ -117,17 +139,20 @@ public class TablesManager : MonoBehaviour
             }
         }
 
-        await Task.Delay(1000);
+        await Task.Delay(1000, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
 
-        await correctOptionObj.MoveTowardsTable(GetLocalPosIn(tableAnswerMiddlePos, (RectTransform)correctOptionObj.optionButton.parent));
+        await correctOptionObj.MoveTowardsTable(GetLocalPosIn(tableAnswerMiddlePos, (RectTransform)correctOptionObj.optionButton.parent), cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
 
         AddAnswer(correctAnswer);
 
         HideOptions();
 
-        await Task.Delay(1000);
+        await Task.Delay(1000, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         if (GameplayManager.Instance.IsGameOver())
         {

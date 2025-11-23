@@ -3,6 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Threading.Tasks;
 using UnityEngine.UI;
+using System.Threading;
 
 public class Option : MonoBehaviour
 {
@@ -46,14 +47,30 @@ public class Option : MonoBehaviour
         optionButton.DOScale(1f, 0.3f);
     }
 
-    public async Task MoveTowardsTable(Vector2 targetPos)
+    public Task MoveTowardsTable(Vector2 targetPos, CancellationToken cancellationToken)
     {
+        var tcs = new TaskCompletionSource<bool>();
+
+        var reg = cancellationToken.Register(() =>
+        {
+            DOTween.Kill(this);
+            tcs.TrySetCanceled(cancellationToken);
+        });
+
         Sequence sequence = DOTween.Sequence();
+        sequence.SetId(this);
         sequence.Append(optionButton.DOAnchorPos(targetPos, 1f).SetEase(Ease.OutBounce));
         sequence.AppendInterval(1f);
         sequence.Append(optionButton.DOScale(0f, 0.5f).SetEase(Ease.OutBounce));
 
-        await sequence.AsyncWaitForCompletion();
+        // Complete Task only when tween finishes
+        sequence.OnComplete(() =>
+        {
+            reg.Dispose();
+            tcs.TrySetResult(true);
+        });
+
+        return tcs.Task;
     }
 
     public void ResetOptionBtn()
