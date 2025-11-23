@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 134662556}
   - component: {fileID: 134662555}
   - component: {fileID: 134662557}
+  - component: {fileID: 134662558}
   m_Layer: 0
   m_Name: Replay
   m_TagString: Untagged
@@ -401,6 +402,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &134662558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134662553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2647f6f230b41f24c9a4548e79137252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedBtn
+  scaleAmt: 1.2
+  duration: 0.3
 --- !u!1 &220868390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3825,6 +3840,7 @@ GameObject:
   - component: {fileID: 870575105}
   - component: {fileID: 870575104}
   - component: {fileID: 870575106}
+  - component: {fileID: 870575107}
   m_Layer: 0
   m_Name: Home
   m_TagString: Untagged
@@ -3959,6 +3975,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &870575107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870575102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2647f6f230b41f24c9a4548e79137252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedBtn
+  scaleAmt: 1.2
+  duration: 0.3
 --- !u!1 &872903408
 GameObject:
   m_ObjectHideFlags: 0
@@ -6628,6 +6658,7 @@ GameObject:
   - component: {fileID: 1239288540}
   - component: {fileID: 1239288539}
   - component: {fileID: 1239288541}
+  - component: {fileID: 1239288542}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -6644,7 +6675,7 @@ RectTransform:
   m_GameObject: {fileID: 1239288537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 972077207}
@@ -6652,7 +6683,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -20, y: 0}
-  m_SizeDelta: {x: 153, y: 155}
+  m_SizeDelta: {x: 91.8, y: 93}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1239288539
 MonoBehaviour:
@@ -6760,6 +6791,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1239288542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239288537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2647f6f230b41f24c9a4548e79137252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedBtn
+  scaleAmt: 1.2
+  duration: 0.3
 --- !u!1 &1240395497
 GameObject:
   m_ObjectHideFlags: 0
