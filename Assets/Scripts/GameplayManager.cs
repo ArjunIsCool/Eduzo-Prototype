@@ -19,6 +19,11 @@ public class GameplayManager : MonoBehaviour
 
     public Button menuBtn;
 
+    [Header("SOUNDS")]
+    public AudioSource correctAnswerSFX;
+    public AudioSource wrongAnswerSFX;
+    public AudioSource gameEndedSFX;
+
     int currentQuestion = -1;
     int currentLives = 3;
     int currentScore = 0;
@@ -188,6 +193,8 @@ public class GameplayManager : MonoBehaviour
             endCard.DisplayMessage("COMPLETED!");
         }
 
+        gameEndedSFX.Play();
+
         await Task.Delay(2000);
 
         UIManager.Instance.ShowEndScreenUI();
@@ -206,9 +213,11 @@ public class GameplayManager : MonoBehaviour
         if (selectedOption.text == questionSet.data[currentQuestion].answer.ToString())
         {
             currentScore++;
+            correctAnswerSFX.Play();
         }else
         {
             LoseLife();
+            wrongAnswerSFX.Play();
         }
 
     }

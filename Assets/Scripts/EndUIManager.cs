@@ -11,6 +11,10 @@ public class EndUIManager : MonoBehaviour
     public GameObject wonRibbon;
     public GameObject lostRibbon;
 
+    [Header("SOUNDS")]
+    public AudioSource wonGameSFX;
+    public AudioSource lostGameSFX;
+
     public static EndUIManager Instance;
 
     private void Awake()
@@ -30,10 +34,14 @@ public class EndUIManager : MonoBehaviour
         {
             wonRibbon.SetActive(true);
             lostRibbon.SetActive(false);
+            
+            wonGameSFX.Play();
         }else
         {
             wonRibbon.SetActive(false);
             lostRibbon.SetActive(true);
+
+            lostGameSFX.Play();
         }
 
         scoreText.text = score.ToString();

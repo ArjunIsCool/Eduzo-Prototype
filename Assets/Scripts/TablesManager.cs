@@ -22,6 +22,10 @@ public class TablesManager : MonoBehaviour
 
     public RectTransform tableAnswerMiddlePos;
 
+    [Header("SOUNDS")]
+    public AudioSource optionsWooshIn;
+    public AudioSource optionsWooshOut;
+
     bool gameplayInProcess = false;
 
     public static TablesManager Instance;
@@ -92,11 +96,13 @@ public class TablesManager : MonoBehaviour
     public void ShowOptions()
     {
         optionsHolder.DOAnchorPos(optionsHolderStartPos, 1f).SetEase(Ease.OutBounce);
+        optionsWooshIn.Play();
     }
 
     public void HideOptions()
     {
         optionsHolder.DOAnchorPos(new Vector3(0f, -1000f, 0f), 1f).SetEase(Ease.OutBounce);
+        optionsWooshOut.Play();
     }
 
     public bool IsGameplayInProcess() { return gameplayInProcess; }
