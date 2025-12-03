@@ -28,10 +28,6 @@ public class GameplayManager : MonoBehaviour
 
     GameOverReason gameOverReason;
 
-    enum GameplayState { INITIALIZING, SHOWING_QUESTION, SHOWING_FEEDBACK, GAME_ENDED};
-
-    GameplayState currentGameplayState;
-
     public Action OnGameInitialized;
 
     public static GameplayManager Instance;
@@ -73,7 +69,6 @@ public class GameplayManager : MonoBehaviour
     IEnumerator InitializeGameplay()
     {
         gameOver = false;
-        currentGameplayState = GameplayState.INITIALIZING;
         currentQuestion = -1;
         currentScore = 0;
         currentLives = 3;
@@ -134,8 +129,6 @@ public class GameplayManager : MonoBehaviour
 
     public void ShowNextQuestion()
     {
-        currentGameplayState = GameplayState.SHOWING_QUESTION;
-
         currentQuestion++;
         TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
 
@@ -182,9 +175,7 @@ public class GameplayManager : MonoBehaviour
 
     public void OnScannedAnswer(string answer)
     {
-        Debug.Log(answer);
-
-        currentGameplayState = GameplayState.SHOWING_FEEDBACK;
+        Debug.Log($"Scanned Answer: {answer}");
 
         cameraPreview.SetActive(false);
 
@@ -204,8 +195,6 @@ public class GameplayManager : MonoBehaviour
 
     public void SelectOption(TMP_Text selectedOption)
     {
-        currentGameplayState = GameplayState.SHOWING_FEEDBACK;
-
         if (selectedOption.text == questionSet.data[currentQuestion].answer.ToString())
         {
             currentScore++;
