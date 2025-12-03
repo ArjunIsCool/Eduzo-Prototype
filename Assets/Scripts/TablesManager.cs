@@ -42,12 +42,12 @@ public class TablesManager : MonoBehaviour
         optionsHolderStartPos = optionsHolder.anchoredPosition;
     }
 
-    private void OnEnable()
+    private void Start()
     {
         GameplayManager.Instance.OnGameInitialized += ResetTable;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameplayManager.Instance.OnGameInitialized -= ResetTable;
     }

@@ -46,7 +46,7 @@ public class DeviceCamera
 	    EasyWebCam.Play();
 #else
         int SourceId = 0;
-        string SourceName = PlayerPrefs.GetString("camera");
+        string SourceName = "USB2.0 HD UVC WebCam";
         if (!string.IsNullOrEmpty(SourceName))
         {
             webcamera.deviceName = SourceName;
@@ -55,6 +55,10 @@ public class DeviceCamera
         {
             webcamera.deviceName = WebCamTexture.devices[SourceId].name;
 
+        }
+        foreach (WebCamDevice webCamDevice in WebCamTexture.devices)
+        {
+            Debug.Log(webCamDevice.name);
         }
         webcamera.Play();
         EasyWebCam.EasyWebCamStarted();

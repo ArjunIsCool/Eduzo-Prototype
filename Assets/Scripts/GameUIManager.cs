@@ -26,12 +26,12 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         GameplayManager.Instance.OnGameInitialized += ResetLives;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameplayManager.Instance.OnGameInitialized -= ResetLives;
     }

@@ -3,12 +3,15 @@ using System.Collections;
 using System.Runtime.Serialization;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
     public QuestionSet questionSet;
+    public GameObject cameraPreview;
+    public QRCodeDecodeController qrController;
 
     [Header("SOUNDS")]
     public AudioSource correctAnswerSFX;
@@ -44,17 +47,28 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         TablesManager.Instance.OnFeedbackComplete += HandleFeedbackCompleted;
+        qrController.onQRScanFinished.AddListener(OnScannedAnswer);
+    }
+
+    private void OnDestroy()
+    {
+        TablesManager.Instance.OnFeedbackComplete -= HandleFeedbackCompleted;
+        qrController.onQRScanFinished.RemoveListener(OnScannedAnswer);
+    }
+
+    private void OnEnable()
+    {
         StartCoroutine(InitializeGameplay());
     }
 
     private void OnDisable()
     {
-        TablesManager.Instance.OnFeedbackComplete -= HandleFeedbackCompleted;
         StopAllCoroutines();
     }
+
 
     IEnumerator InitializeGameplay()
     {
@@ -109,18 +123,12 @@ public class GameplayManager : MonoBehaviour
 
     void HandleFeedbackCompleted()
     {
-        if (gameOver)
+        if (gameOver || (currentQuestion >= questionSet.data.Count - 1))
         {
             EndGameplay();
         } else
         {
-            if (currentQuestion >= questionSet.data.Count - 1)
-            {
-                EndGameplay();
-            } else
-            {
-                ShowNextQuestion();
-            }
+            ShowNextQuestion();
         }
     }
 
@@ -130,6 +138,9 @@ public class GameplayManager : MonoBehaviour
 
         currentQuestion++;
         TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
+
+        cameraPreview.SetActive(true);
+        qrController.Reset();
     }
 
     public void EndGameplay()
@@ -167,6 +178,28 @@ public class GameplayManager : MonoBehaviour
         int maxPossibleScore = questionSet.data.Count * 3;
 
         EndUIManager.Instance.UpdateEndScreenInfo(!gameOver, totalScore, maxPossibleScore);
+    }
+
+    public void OnScannedAnswer(string answer)
+    {
+        Debug.Log(answer);
+
+        currentGameplayState = GameplayState.SHOWING_FEEDBACK;
+
+        cameraPreview.SetActive(false);
+
+        if (int.Parse(answer) == questionSet.data[currentQuestion].answer)
+        {
+            currentScore++;
+            correctAnswerSFX.Play();
+        }
+        else
+        {
+            LoseLife();
+            wrongAnswerSFX.Play();
+        }
+
+        StartCoroutine(TablesManager.Instance.DisplayOptionsFeedback(answer, questionSet.data[currentQuestion].answer.ToString()));
     }
 
     public void SelectOption(TMP_Text selectedOption)
