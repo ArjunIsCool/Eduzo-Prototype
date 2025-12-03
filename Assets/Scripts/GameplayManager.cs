@@ -1,5 +1,6 @@
-using System.Threading;
-using System.Threading.Tasks;
+using System;
+using System.Collections;
+using System.Runtime.Serialization;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -9,16 +10,6 @@ public class GameplayManager : MonoBehaviour
 {
     public QuestionSet questionSet;
 
-    public TMP_Text timerText;
-
-    public Transform livesHolder;
-    public Sprite liveOn;
-    public Sprite liveOff;
-
-    public EndCard endCard;
-
-    public Button menuBtn;
-
     [Header("SOUNDS")]
     public AudioSource correctAnswerSFX;
     public AudioSource wrongAnswerSFX;
@@ -27,15 +18,18 @@ public class GameplayManager : MonoBehaviour
     int currentQuestion = -1;
     int currentLives = 3;
     int currentScore = 0;
-    float currentTimeSeconds = 0;
+    int currentTimeSeconds = 0;
 
-    bool gameplayInitialized = false;
     bool gameOver = false; //If we have lost game ONLY
     enum GameOverReason { OUT_OF_LIVES, TIME_UP};
 
     GameOverReason gameOverReason;
 
-    CancellationTokenSource gameplayCTS;
+    enum GameplayState { INITIALIZING, SHOWING_QUESTION, SHOWING_FEEDBACK, GAME_ENDED};
+
+    GameplayState currentGameplayState;
+
+    public Action OnGameInitialized;
 
     public static GameplayManager Instance;
 
@@ -52,85 +46,52 @@ public class GameplayManager : MonoBehaviour
 
     private void OnEnable()
     {
-        InitializeGameplay();
+        TablesManager.Instance.OnFeedbackComplete += HandleFeedbackCompleted;
+        StartCoroutine(InitializeGameplay());
     }
 
     private void OnDisable()
     {
-        gameplayCTS.Cancel();
+        TablesManager.Instance.OnFeedbackComplete -= HandleFeedbackCompleted;
+        StopAllCoroutines();
     }
 
-    async void InitializeGameplay()
+    IEnumerator InitializeGameplay()
     {
-        gameplayCTS = new CancellationTokenSource();
-
         gameOver = false;
-
-        menuBtn.gameObject.SetActive(true);
-
+        currentGameplayState = GameplayState.INITIALIZING;
         currentQuestion = -1;
         currentScore = 0;
         currentLives = 3;
         currentTimeSeconds = questionSet.totalTimeSeconds;
-        ResetLives();
-        UpdateTimerUI();
 
-        TablesManager.Instance.ResetTable();
+        OnGameInitialized?.Invoke();
 
-        await Task.Delay(1000);
+        yield return new WaitForSeconds(1f);
 
         ShowNextQuestion();
-
-        gameplayInitialized = true;
-    }
-
-    void ResetLives()
-    {
-        foreach(Transform life in livesHolder)
-        {
-            life.GetComponent<Image>().sprite = liveOn;
-        }
+        StartCoroutine(RunGameplayTimer());
     }
 
 
-    public bool IsGameOver() { return gameOver; }
-
-
-    private void Update()
+    IEnumerator RunGameplayTimer()
     {
-        if (!gameplayInitialized) return;
-        currentTimeSeconds -= Time.deltaTime;
-        UpdateTimerUI();
-
-        if (currentTimeSeconds <= 0f)
+        while (!gameOver)
         {
-            currentTimeSeconds = 0f;
-            UpdateTimerUI();
+            yield return new WaitForSeconds(1f);
+            currentTimeSeconds --;
 
-            gameOver = true;
-            gameplayInitialized = false;
-
-            if (!TablesManager.Instance.IsGameplayInProcess())
+            if(currentTimeSeconds <= 0f)
             {
+                currentTimeSeconds = 0;
+                gameOver = true;
                 gameOverReason = GameOverReason.TIME_UP;
-                EndGameplay();
             }
+
+            GameUIManager.Instance.UpdateTimerUI(currentTimeSeconds);
         }
     }
 
-    void UpdateTimerUI()
-    {
-        int minutes = Mathf.FloorToInt(currentTimeSeconds / 60);
-        int seconds = Mathf.FloorToInt(currentTimeSeconds % 60);
-
-        if (seconds < 10)
-        {
-            timerText.text = $"0{minutes}:0{seconds}";
-        } else
-        {
-            timerText.text = $"0{minutes}:{seconds}";
-        }
-    }
 
     void LoseLife()
     {
@@ -138,64 +99,67 @@ public class GameplayManager : MonoBehaviour
 
         if(currentLives <= 0)
         {
+            currentLives = 0;
             gameOver = true;
-            gameplayInitialized = false;
-
-            if(!TablesManager.Instance.IsGameplayInProcess())
-            {
-                gameOverReason = GameOverReason.OUT_OF_LIVES;
-                EndGameplay();
-            }
+            gameOverReason = GameOverReason.OUT_OF_LIVES;
         }
 
-        Transform lostLife = livesHolder.GetChild(currentLives);
-        lostLife.DOShakeScale(0.5f).OnComplete(() =>
+        GameUIManager.Instance.UpdateLivesUIOnLostLife(currentLives);
+    }
+
+    void HandleFeedbackCompleted()
+    {
+        if (gameOver)
         {
-
-            lostLife.DOScale(1.1f, 0.15f).SetLoops(2, LoopType.Yoyo);
-
-            lostLife.GetComponent<Image>().sprite = liveOff;
-
-
-        });
+            EndGameplay();
+        } else
+        {
+            if (currentQuestion >= questionSet.data.Count - 1)
+            {
+                EndGameplay();
+            } else
+            {
+                ShowNextQuestion();
+            }
+        }
     }
 
     public void ShowNextQuestion()
     {
-        if (gameOver) return;
-        if(currentQuestion == questionSet.data.Count - 1)
-        {
-            gameplayInitialized = false;
-            EndGameplay();
-
-            return;
-        }
+        currentGameplayState = GameplayState.SHOWING_QUESTION;
 
         currentQuestion++;
         TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
     }
 
-    public async void EndGameplay()
+    public void EndGameplay()
     {
-        menuBtn.gameObject.SetActive(false);
+        StartCoroutine(EndGameplayRoutine());
+    }
+
+    public IEnumerator EndGameplayRoutine()
+    {
+        string endCardMessage = "";
         if (gameOver)
         {
             if (gameOverReason == GameOverReason.OUT_OF_LIVES)
             {
-                endCard.DisplayMessage("OUT OF LIVES!");
-            } else if (gameOverReason == GameOverReason.TIME_UP)
-            {
-                endCard.DisplayMessage("TIME'S UP!");
+                endCardMessage = "OUT OF LIVES!";
             }
-
-        }else
-        {
-            endCard.DisplayMessage("COMPLETED!");
+            else if (gameOverReason == GameOverReason.TIME_UP)
+            {
+                endCardMessage = "TIME'S UP!";
+            }
         }
+        else
+        {
+            endCardMessage = "COMPLETED!";
+        }
+        GameUIManager.Instance.ShowEndCard(endCardMessage);
 
         gameEndedSFX.Play();
 
-        await Task.Delay(2000);
+        yield return new WaitForSeconds(2f);
 
         UIManager.Instance.ShowEndScreenUI();
 
@@ -207,8 +171,7 @@ public class GameplayManager : MonoBehaviour
 
     public void SelectOption(TMP_Text selectedOption)
     {
-        TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString(), gameplayCTS.Token);
-
+        currentGameplayState = GameplayState.SHOWING_FEEDBACK;
 
         if (selectedOption.text == questionSet.data[currentQuestion].answer.ToString())
         {
@@ -220,5 +183,6 @@ public class GameplayManager : MonoBehaviour
             wrongAnswerSFX.Play();
         }
 
+        StartCoroutine(TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString()));
     }
 }

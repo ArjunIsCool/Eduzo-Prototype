@@ -1,9 +1,8 @@
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
-using System.Threading.Tasks;
 using UnityEngine.UI;
-using System.Threading;
+using System.Collections;
 
 public class Option : MonoBehaviour
 {
@@ -47,30 +46,15 @@ public class Option : MonoBehaviour
         optionButton.DOScale(1f, 0.3f);
     }
 
-    public Task MoveTowardsTable(Vector2 targetPos, CancellationToken cancellationToken)
+    public IEnumerator MoveTowardsTable(Vector2 targetPos)
     {
-        var tcs = new TaskCompletionSource<bool>();
-
-        var reg = cancellationToken.Register(() =>
-        {
-            DOTween.Kill(this);
-            tcs.TrySetCanceled(cancellationToken);
-        });
-
         Sequence sequence = DOTween.Sequence();
         sequence.SetId(this);
         sequence.Append(optionButton.DOAnchorPos(targetPos, 1f).SetEase(Ease.OutBounce));
         sequence.AppendInterval(1f);
         sequence.Append(optionButton.DOScale(0f, 0.5f).SetEase(Ease.OutBounce));
 
-        // Complete Task only when tween finishes
-        sequence.OnComplete(() =>
-        {
-            reg.Dispose();
-            tcs.TrySetResult(true);
-        });
-
-        return tcs.Task;
+        yield return sequence.WaitForCompletion();
     }
 
     public void ResetOptionBtn()

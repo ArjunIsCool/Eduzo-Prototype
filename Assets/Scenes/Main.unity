@@ -1233,6 +1233,7 @@ GameObject:
   - component: {fileID: 393916483}
   - component: {fileID: 393916482}
   - component: {fileID: 393916485}
+  - component: {fileID: 393916486}
   m_Layer: 0
   m_Name: GameUI
   m_TagString: Untagged
@@ -1339,15 +1340,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   questionSet: {fileID: 11400000, guid: 4505705a71a2a1d47abb04138b5282e3, type: 2}
+  correctAnswerSFX: {fileID: 626704248}
+  wrongAnswerSFX: {fileID: 2004417043}
+  gameEndedSFX: {fileID: 817474065}
+--- !u!114 &393916486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393916480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4814323b4b307f4abd2ce9c0b4178ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
   timerText: {fileID: 1674795777}
   livesHolder: {fileID: 1004676305}
   liveOn: {fileID: -6879906929894484469, guid: d969b2415db1c364c8b94b8cd5623751, type: 3}
   liveOff: {fileID: 5868845036706714400, guid: 6d7f54350f35e67409f100ddcfc91702, type: 3}
   endCard: {fileID: 2119971131}
-  menuBtn: {fileID: 1239288541}
-  correctAnswerSFX: {fileID: 626704248}
-  wrongAnswerSFX: {fileID: 2004417043}
-  gameEndedSFX: {fileID: 817474065}
 --- !u!1 &418976171
 GameObject:
   m_ObjectHideFlags: 0

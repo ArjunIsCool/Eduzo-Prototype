@@ -4,8 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-using System.Threading.Tasks;
-using System.Threading;
+using System.Collections;
 
 public class TablesManager : MonoBehaviour
 {
@@ -26,7 +25,7 @@ public class TablesManager : MonoBehaviour
     public AudioSource optionsWooshIn;
     public AudioSource optionsWooshOut;
 
-    bool gameplayInProcess = false;
+    public event Action OnFeedbackComplete;
 
     public static TablesManager Instance;
 
@@ -41,13 +40,20 @@ public class TablesManager : MonoBehaviour
         }
 
         optionsHolderStartPos = optionsHolder.anchoredPosition;
-        HideOptions();
+    }
+
+    private void OnEnable()
+    {
+        GameplayManager.Instance.OnGameInitialized += ResetTable;
+    }
+
+    private void OnDisable()
+    {
+        GameplayManager.Instance.OnGameInitialized -= ResetTable;
     }
 
     public void ResetTable()
     {
-        gameplayInProcess = false;
-
         foreach (Transform question in questionsHolder)
         {
             Destroy(question.gameObject);
@@ -103,13 +109,16 @@ public class TablesManager : MonoBehaviour
     {
         optionsHolder.DOAnchorPos(new Vector3(0f, -1000f, 0f), 1f).SetEase(Ease.OutBounce);
         optionsWooshOut.Play();
+
+        foreach (Option optionObj in optionsObjs)
+        {
+            optionObj.ResetOptionBtn();
+        }
     }
 
-    public bool IsGameplayInProcess() { return gameplayInProcess; }
 
-    public async void DisplayOptionsFeedback(string chosenOption, string correctAnswer, CancellationToken cancellationToken)
+    public IEnumerator DisplayOptionsFeedback(string chosenOption, string correctAnswer)
     {
-        gameplayInProcess = true;
         foreach (Option optionObj in optionsObjs)
         {
             optionObj.optionButton.GetComponent<Button>().enabled = false;
@@ -145,36 +154,19 @@ public class TablesManager : MonoBehaviour
             }
         }
 
-        await Task.Delay(1000, cancellationToken);
-        cancellationToken.ThrowIfCancellationRequested();
+        yield return new WaitForSeconds(1f);
 
 
-        await correctOptionObj.MoveTowardsTable(GetLocalPosIn(tableAnswerMiddlePos, (RectTransform)correctOptionObj.optionButton.parent), cancellationToken);
-        cancellationToken.ThrowIfCancellationRequested();
-
+        yield return StartCoroutine(correctOptionObj.MoveTowardsTable(GetLocalPosIn(tableAnswerMiddlePos, (RectTransform)correctOptionObj.optionButton.parent)));
+        
 
         AddAnswer(correctAnswer);
 
         HideOptions();
 
-        await Task.Delay(1000, cancellationToken);
-        cancellationToken.ThrowIfCancellationRequested();
+        yield return new WaitForSeconds(1f);
 
-        if (GameplayManager.Instance.IsGameOver())
-        {
-            gameplayInProcess = false;
-            GameplayManager.Instance.EndGameplay();
-            return;
-        }
-
-        gameplayInProcess = false;
-
-        foreach (Option optionObj in optionsObjs)
-        {
-            optionObj.ResetOptionBtn();
-        }
-
-        GameplayManager.Instance.ShowNextQuestion();
+        OnFeedbackComplete?.Invoke();
     }
 
     public static Vector2 GetLocalPosIn(RectTransform target, RectTransform relativeTo)
