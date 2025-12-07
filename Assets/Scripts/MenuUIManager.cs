@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MenuUIManager : MonoBehaviour
 {
     public Toggle practiceModeToggle;
+    public TMP_InputField timeInputField;
 
     public TMP_Dropdown tablesDropdown;
     public Button questionsDropdown;
@@ -41,6 +42,7 @@ public class MenuUIManager : MonoBehaviour
     void InitializeOptions()
     {
         practiceModeToggle.onValueChanged.AddListener(OnChangeGameMode);
+        timeInputField.onValueChanged.AddListener(OnChangeTime);
 
         tablesDropdown.ClearOptions();
 
@@ -69,10 +71,17 @@ public class MenuUIManager : MonoBehaviour
         if(isPracticeMode)
         {
             chosenGameSettings.gameMode = GameSettings.GameMode.PRACTICE;
+            timeInputField.gameObject.SetActive(false);
         } else
         {
             chosenGameSettings.gameMode = GameSettings.GameMode.TEST;
+            timeInputField.gameObject.SetActive(true);
         }
+    }
+
+    public void OnChangeTime(string minutes)
+    {
+        chosenGameSettings.totalTimeSeconds = int.Parse(minutes) * 60;
     }
 
     public void OnSelectTables(int value)

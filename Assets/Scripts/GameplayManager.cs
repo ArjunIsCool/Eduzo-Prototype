@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
-    public QuestionSet questionSet;
     public GameObject cameraPreview;
     public QRCodeDecodeController qrController;
 
@@ -28,6 +27,7 @@ public class GameplayManager : MonoBehaviour
     GameOverReason gameOverReason;
 
     GameSettings currentGameSettings;
+    QuestionSet questionSet;
 
     public Action OnGameInitialized;
 
@@ -69,7 +69,9 @@ public class GameplayManager : MonoBehaviour
         currentQuestion = -1;
         currentScore = 0;
         currentLives = 3;
-        currentTimeSeconds = questionSet.totalTimeSeconds;
+        currentTimeSeconds = currentGameSettings.totalTimeSeconds;
+
+        SetupQuestionSet();
 
         OnGameInitialized?.Invoke();
 
@@ -83,6 +85,25 @@ public class GameplayManager : MonoBehaviour
         }
 
         ShowNextQuestion();
+    }
+
+    void SetupQuestionSet()
+    {
+        questionSet = new QuestionSet();
+        foreach (int question in currentGameSettings.questions)
+        {
+            QuestionSet.QuestionData questionData = new QuestionSet.QuestionData();
+            questionData.questionText = $"{currentGameSettings.tablesNo} x {question}";
+            questionData.answer = currentGameSettings.tablesNo * question;
+
+            //Simple algorithm to setup wrong options
+            questionData.wrongOptions.Add(currentGameSettings.tablesNo + question); //Adding the values instead of multiplying
+            questionData.wrongOptions.Add(currentGameSettings.tablesNo * (question + 1)); //Next value in the table set
+            questionData.wrongOptions.Add(currentGameSettings.tablesNo * (question - 1)); //Previous value in the table set
+
+
+            questionSet.data.Add(questionData);
+        }
     }
 
 
@@ -121,7 +142,12 @@ public class GameplayManager : MonoBehaviour
 
     void HandleFeedbackCompleted()
     {
-        if (gameOver || (currentQuestion >= questionSet.data.Count - 1))
+        if(currentQuestion >= questionSet.data.Count - 1) //This was the last question, so we complete the game
+        {
+            gameOverReason = GameOverReason.COMPLETED;
+        }
+
+        if (gameOver || gameOverReason == GameOverReason.COMPLETED)
         {
             EndGameplay();
         } else
@@ -183,7 +209,7 @@ public class GameplayManager : MonoBehaviour
 
         cameraPreview.SetActive(false);
 
-        if (int.Parse(answer) == questionSet.data[currentQuestion].answer)
+        if (int.TryParse(answer, out int scannedVal) && scannedVal == questionSet.data[currentQuestion].answer)
         {
             currentScore++;
             correctAnswerSFX.Play();

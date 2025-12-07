@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-[CreateAssetMenu(fileName = "QuestionSet", menuName = "Scriptable Objects/QuestionSet")]
-public class QuestionSet : ScriptableObject
+public class QuestionSet
 {
     [Serializable]
     public class QuestionData
     {
         public string questionText;
         public int answer;
-        public List<int> wrongOptions;
+        public List<int> wrongOptions = new List<int>();
     }
 
-    public List<QuestionData> data;
-    public int totalTimeSeconds;
+    public List<QuestionData> data = new List<QuestionData>();
 }
