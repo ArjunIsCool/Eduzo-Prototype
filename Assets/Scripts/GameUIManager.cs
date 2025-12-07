@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour
 {
+    public GameObject gameHUD;
     public TMP_Text timerText;
 
     public Transform livesHolder;
@@ -34,6 +35,11 @@ public class GameUIManager : MonoBehaviour
     private void OnDestroy()
     {
         GameplayManager.Instance.OnGameInitialized -= ResetLives;
+    }
+
+    public void ToggleHUD(bool active)
+    {
+        gameHUD.SetActive(active);
     }
 
     public void ResetLives()

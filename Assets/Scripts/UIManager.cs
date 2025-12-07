@@ -6,14 +6,6 @@ public class UIManager : MonoBehaviour
 {
     public GameObject menuUI, gameUI, endUI;
 
-    [Header("SETTINGS")]
-    public AudioMixer gameAudioMixer;
-
-    public Image soundIcon, musicIcon;
-    public Sprite soundOnIcon, soundOffIcon, musicOnIcon, musicOffIcon;
-
-    bool soundOn, musicOn;
-
     public static UIManager Instance;
 
     private void Awake()
@@ -25,11 +17,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        soundOn = true;
-        musicOn = true;
     }
-
 
     public void ShowMenuUI()
     {
@@ -43,8 +31,9 @@ public class UIManager : MonoBehaviour
         menuUI.SetActive(false);
         gameUI.SetActive(true);
         endUI.SetActive(false);
-    }
 
+        GameplayManager.Instance.InitializeGameplay(MenuUIManager.Instance.GetGameSettings());
+    }
 
     public void ShowEndScreenUI()
     {
@@ -52,36 +41,4 @@ public class UIManager : MonoBehaviour
         gameUI.SetActive(false);
         endUI.SetActive(true);
     }
-    
-    public void ToggleSound()
-    {
-        soundOn = !soundOn;
-
-        if (soundOn)
-        {
-            gameAudioMixer.SetFloat("SoundVol", 0f);
-            soundIcon.sprite = soundOnIcon;
-        } else
-        {
-            gameAudioMixer.SetFloat("SoundVol", -80f);
-            soundIcon.sprite = soundOffIcon;
-        }
-    }
-
-    public void ToggleMusic()
-    {
-        musicOn = !musicOn;
-
-        if (musicOn)
-        {
-            gameAudioMixer.SetFloat("MusicVol", 0f);
-            musicIcon.sprite = musicOnIcon;
-        }
-        else
-        {
-            gameAudioMixer.SetFloat("MusicVol", -80f);
-            musicIcon.sprite = musicOffIcon;
-        }
-    }
-
 }

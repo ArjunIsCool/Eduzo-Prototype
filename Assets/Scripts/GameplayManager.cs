@@ -23,10 +23,11 @@ public class GameplayManager : MonoBehaviour
     int currentScore = 0;
     int currentTimeSeconds = 0;
 
-    bool gameOver = false; //If we have lost game ONLY
-    enum GameOverReason { OUT_OF_LIVES, TIME_UP};
-
+    bool gameOver = false;
+    enum GameOverReason { OUT_OF_LIVES, TIME_UP, COMPLETED};
     GameOverReason gameOverReason;
+
+    GameSettings currentGameSettings;
 
     public Action OnGameInitialized;
 
@@ -55,19 +56,15 @@ public class GameplayManager : MonoBehaviour
         qrController.onQRScanFinished.RemoveListener(OnScannedAnswer);
     }
 
-    private void OnEnable()
-    {
-        StartCoroutine(InitializeGameplay());
-    }
-
     private void OnDisable()
     {
         StopAllCoroutines();
     }
 
 
-    IEnumerator InitializeGameplay()
+    public void InitializeGameplay(GameSettings gameSettings)
     {
+        currentGameSettings = gameSettings;
         gameOver = false;
         currentQuestion = -1;
         currentScore = 0;
@@ -76,10 +73,16 @@ public class GameplayManager : MonoBehaviour
 
         OnGameInitialized?.Invoke();
 
-        yield return new WaitForSeconds(1f);
+        if (currentGameSettings.gameMode == GameSettings.GameMode.PRACTICE)
+        {
+            GameUIManager.Instance.ToggleHUD(false);
+        }else
+        {
+            GameUIManager.Instance.ToggleHUD(true);
+            StartCoroutine(RunGameplayTimer());
+        }
 
         ShowNextQuestion();
-        StartCoroutine(RunGameplayTimer());
     }
 
 
@@ -138,26 +141,27 @@ public class GameplayManager : MonoBehaviour
 
     public void EndGameplay()
     {
+        gameOver = true;
         StartCoroutine(EndGameplayRoutine());
     }
 
     public IEnumerator EndGameplayRoutine()
     {
         string endCardMessage = "";
-        if (gameOver)
+        switch(gameOverReason)
         {
-            if (gameOverReason == GameOverReason.OUT_OF_LIVES)
-            {
+            case GameOverReason.OUT_OF_LIVES:
                 endCardMessage = "OUT OF LIVES!";
-            }
-            else if (gameOverReason == GameOverReason.TIME_UP)
-            {
+                break;
+            case GameOverReason.TIME_UP:
                 endCardMessage = "TIME'S UP!";
-            }
-        }
-        else
-        {
-            endCardMessage = "COMPLETED!";
+                break;
+            case GameOverReason.COMPLETED:
+                endCardMessage = "COMPLETED!";
+                break;
+            default:
+                endCardMessage = "COMPLETED!";
+                break;
         }
         GameUIManager.Instance.ShowEndCard(endCardMessage);
 
@@ -186,25 +190,13 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            LoseLife();
+            if (currentGameSettings.gameMode == GameSettings.GameMode.TEST)
+            {
+                LoseLife();
+            }
             wrongAnswerSFX.Play();
         }
 
         StartCoroutine(TablesManager.Instance.DisplayOptionsFeedback(answer, questionSet.data[currentQuestion].answer.ToString()));
-    }
-
-    public void SelectOption(TMP_Text selectedOption)
-    {
-        if (selectedOption.text == questionSet.data[currentQuestion].answer.ToString())
-        {
-            currentScore++;
-            correctAnswerSFX.Play();
-        }else
-        {
-            LoseLife();
-            wrongAnswerSFX.Play();
-        }
-
-        StartCoroutine(TablesManager.Instance.DisplayOptionsFeedback(selectedOption.text, questionSet.data[currentQuestion].answer.ToString()));
     }
 }
