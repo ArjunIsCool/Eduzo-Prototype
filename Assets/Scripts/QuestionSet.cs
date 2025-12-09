@@ -8,7 +8,6 @@ public class QuestionSet
     {
         public string questionText;
         public int answer;
-        public List<int> wrongOptions = new List<int>();
     }
 
     public List<QuestionData> data = new List<QuestionData>();

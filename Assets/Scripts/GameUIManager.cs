@@ -12,7 +12,11 @@ public class GameUIManager : MonoBehaviour
     public Sprite liveOn;
     public Sprite liveOff;
 
-    public EndCard endCard;
+    public Card questionCard;
+    public Card correctCard;
+    public Card wrongCard;
+    public Card answerCard;
+    public Card gameEndedCard;
 
     public static GameUIManager Instance;
 
@@ -77,13 +81,5 @@ public class GameUIManager : MonoBehaviour
             timerText.text = $"0{minutes}:{seconds}";
         }
     }
-
-    public void ShowEndCard(string message)
-    {
-        endCard.DisplayMessage(message);
-    }
-
-
-
 
 }

@@ -28,7 +28,7 @@ public class EndUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateEndScreenInfo(bool won, int score, int maxPossibleScore)
+    public void UpdateEndScreenInfo(bool won, double scorePercentage)
     {
         if(won)
         {
@@ -44,17 +44,15 @@ public class EndUIManager : MonoBehaviour
             lostGameSFX.Play();
         }
 
-        scoreText.text = score.ToString();
+        scoreText.text = scorePercentage.ToString();
 
         int stars;
 
-        float percentage = (float)score / maxPossibleScore;
-
-        if (percentage >= 0.75) // 75% - 3 stars
+        if (scorePercentage >= 75) // 75% - 3 stars
         {
             stars = 3;
         }
-        else if (percentage >= 0.30) //30% - 2 stars
+        else if (scorePercentage >= 30) //30% - 2 stars
         {
             stars = 2;
         } else //1 star guaranteed for playing

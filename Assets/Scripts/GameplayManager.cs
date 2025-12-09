@@ -81,7 +81,6 @@ public class GameplayManager : MonoBehaviour
         }else
         {
             GameUIManager.Instance.ToggleHUD(true);
-            StartCoroutine(RunGameplayTimer());
         }
 
         ShowNextQuestion();
@@ -95,12 +94,6 @@ public class GameplayManager : MonoBehaviour
             QuestionSet.QuestionData questionData = new QuestionSet.QuestionData();
             questionData.questionText = $"{currentGameSettings.tablesNo} x {question}";
             questionData.answer = currentGameSettings.tablesNo * question;
-
-            //Simple algorithm to setup wrong options
-            questionData.wrongOptions.Add(currentGameSettings.tablesNo + question); //Adding the values instead of multiplying
-            questionData.wrongOptions.Add(currentGameSettings.tablesNo * (question + 1)); //Next value in the table set
-            questionData.wrongOptions.Add(currentGameSettings.tablesNo * (question - 1)); //Previous value in the table set
-
 
             questionSet.data.Add(questionData);
         }
@@ -159,7 +152,13 @@ public class GameplayManager : MonoBehaviour
     public void ShowNextQuestion()
     {
         currentQuestion++;
-        TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
+        GameUIManager.Instance.questionCard.DisplayMessage($"What is {questionSet.data[currentQuestion].questionText}?", -1f);
+        //TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
+
+        if (currentGameSettings.gameMode == GameSettings.GameMode.TEST)
+        {
+            StartCoroutine(RunGameplayTimer());
+        }
 
         cameraPreview.SetActive(true);
         qrController.Reset();
@@ -168,6 +167,7 @@ public class GameplayManager : MonoBehaviour
     public void EndGameplay()
     {
         gameOver = true;
+        StopCoroutine(RunGameplayTimer());
         StartCoroutine(EndGameplayRoutine());
     }
 
@@ -189,7 +189,7 @@ public class GameplayManager : MonoBehaviour
                 endCardMessage = "COMPLETED!";
                 break;
         }
-        GameUIManager.Instance.ShowEndCard(endCardMessage);
+        GameUIManager.Instance.gameEndedCard.DisplayMessage(endCardMessage, -1f);
 
         gameEndedSFX.Play();
 
@@ -197,25 +197,40 @@ public class GameplayManager : MonoBehaviour
 
         UIManager.Instance.ShowEndScreenUI();
 
-        int totalScore = currentScore * currentLives;
-        int maxPossibleScore = questionSet.data.Count * 3;
 
-        EndUIManager.Instance.UpdateEndScreenInfo(!gameOver, totalScore, maxPossibleScore);
+        double scorePercentage = Math.Round((double)currentScore / questionSet.data.Count, 2);
+
+        EndUIManager.Instance.UpdateEndScreenInfo(!gameOver, scorePercentage);
     }
 
     public void OnScannedAnswer(string answer)
     {
         Debug.Log($"Scanned Answer: {answer}");
 
+        if(!int.TryParse(answer, out int result))
+        {
+            Debug.Log("Not a valid answer type, ignoring..");
+            qrController.Reset();
+            return;
+        }
+
+        StopCoroutine(RunGameplayTimer());
+        GameUIManager.Instance.questionCard.CloseImmediate();
         cameraPreview.SetActive(false);
 
-        if (int.TryParse(answer, out int scannedVal) && scannedVal == questionSet.data[currentQuestion].answer)
+        bool isCorrect = false;
+
+        if (result == questionSet.data[currentQuestion].answer)
         {
+            isCorrect = true;
+            GameUIManager.Instance.correctCard.DisplayMessage("CORRECT!", 2f);
             currentScore++;
             correctAnswerSFX.Play();
         }
         else
         {
+            isCorrect = false;
+            GameUIManager.Instance.wrongCard.DisplayMessage("WRONG!", 2f);
             if (currentGameSettings.gameMode == GameSettings.GameMode.TEST)
             {
                 LoseLife();
@@ -223,6 +238,20 @@ public class GameplayManager : MonoBehaviour
             wrongAnswerSFX.Play();
         }
 
-        StartCoroutine(TablesManager.Instance.DisplayOptionsFeedback(answer, questionSet.data[currentQuestion].answer.ToString()));
+        StartCoroutine(DisplayAnswerFeedback(isCorrect));
+    }
+
+    IEnumerator DisplayAnswerFeedback(bool answeredCorrectly)
+    {
+        string question = questionSet.data[currentQuestion].questionText;
+        string answer = questionSet.data[currentQuestion].answer.ToString();
+
+        yield return new WaitForSeconds(3f);
+
+        GameUIManager.Instance.answerCard.DisplayMessage($"{question} = {answer}", 2f);
+
+        yield return new WaitForSeconds(3f);
+
+        StartCoroutine(TablesManager.Instance.DisplayAnswerFeedback(question, answer));
     }
 }
