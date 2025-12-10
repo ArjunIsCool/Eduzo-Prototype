@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class GameUIManager : MonoBehaviour
     public Card wrongCard;
     public Card answerCard;
     public Card gameEndedCard;
+
+    public GameObject correctAnswerConfetti;
 
     public static GameUIManager Instance;
 
@@ -80,6 +83,18 @@ public class GameUIManager : MonoBehaviour
         {
             timerText.text = $"0{minutes}:{seconds}";
         }
+    }
+
+    public void PlayCorrectAnswerConfetti()
+    {
+        correctAnswerConfetti.SetActive(true);
+        StartCoroutine(DisableCorrectAnswerConfetti());
+    }
+
+    IEnumerator DisableCorrectAnswerConfetti()
+    {
+        yield return new WaitForSeconds(3f);
+        correctAnswerConfetti.SetActive(false);
     }
 
 }

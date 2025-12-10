@@ -10,6 +10,10 @@ public class Card : MonoBehaviour
     public enum DisplayStyle { Whoosh, Zoom}
     public DisplayStyle displayStyle;
 
+    public bool playAudio;
+    public AudioSource displaySound;
+    public AudioSource closeSound;
+
     RectTransform rectTransform;
 
     private void Awake()
@@ -39,6 +43,11 @@ public class Card : MonoBehaviour
                 break;
         }
 
+        if(playAudio)
+        {
+            displaySound.Play();
+        }
+
         if(duration > 0f) //Dont close if duration was not specified
         {
             StartCoroutine(CloseAfterDuration(duration));
@@ -63,6 +72,11 @@ public class Card : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        if (playAudio)
+        {
+            closeSound.Play();
         }
     }
 

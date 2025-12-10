@@ -64,6 +64,8 @@ public class MenuUIManager : MonoBehaviour
 
         questionsDropdown.onClick.AddListener(ToggleQuestionsDropdown);
 
+        OnChangeGameMode(practiceModeToggle.isOn);
+
     }
 
     public void OnChangeGameMode(bool isPracticeMode)
@@ -72,15 +74,22 @@ public class MenuUIManager : MonoBehaviour
         {
             chosenGameSettings.gameMode = GameSettings.GameMode.PRACTICE;
             timeInputField.gameObject.SetActive(false);
+            chosenGameSettings.totalTimeSeconds = 9999999;
         } else
         {
             chosenGameSettings.gameMode = GameSettings.GameMode.TEST;
             timeInputField.gameObject.SetActive(true);
+            OnChangeTime(timeInputField.text);
         }
     }
 
     public void OnChangeTime(string minutes)
     {
+        if (minutes == "" || minutes == null)
+        {
+            chosenGameSettings.totalTimeSeconds = 180; //Default to 3 minutes
+            return;
+        }
         chosenGameSettings.totalTimeSeconds = int.Parse(minutes) * 60;
     }
 

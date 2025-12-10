@@ -4,13 +4,14 @@ using System.Collections.Generic;
 [Serializable]
 public class UserData
 {
-    public int totalQuestions; //Total no of questions for the session
+    public string gameMode; //Practice or test mode
+    public int totalQuestions; //Total no of questions for the session, including unattempted
     public int correctAnswers; //No of correctly answered questions
     public int wrongAnswers; //No of wrongly answered questions
 
     public double scorePercentage; //Percentage of correct / total questions
     public int remainingLives; //How many lives left
-    public double totalTimeTaken; //Total game time used
+    public double totalTimeTaken; //Total game time used (seconds)
 
     [Serializable]
     public class QuestionSummary
@@ -20,8 +21,8 @@ public class UserData
         public bool attempted;
         public string userResponse; //Empty if not attempted
         public string result; //CORRECT or WRONG, empty if not attempted
-        public double responseTime; //Time taken to answer the question, 0 if not attempted
+        public double responseTime; //Time taken (seconds) to answer the question, 0 if not attempted
     }
 
-    public List<QuestionSummary> questionsSummary;
+    public List<QuestionSummary> questionsSummary = new List<QuestionSummary>();
 }

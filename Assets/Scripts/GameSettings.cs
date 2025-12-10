@@ -11,4 +11,14 @@ public class GameSettings
     public List<int> questions = new List<int>();  //List of questions?
 
     public int totalTimeSeconds; //Time provided to player for the game session?
+
+    public GameSettings () { } //Default constructor
+
+    public GameSettings(GameSettings other) //Copy constructor
+    {
+        gameMode = other.gameMode;
+        tablesNo = other.tablesNo;
+        questions = new List<int>(other.questions);
+        totalTimeSeconds = other.totalTimeSeconds;
+    }
 }

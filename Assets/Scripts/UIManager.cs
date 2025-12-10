@@ -32,7 +32,8 @@ public class UIManager : MonoBehaviour
         gameUI.SetActive(true);
         endUI.SetActive(false);
 
-        GameplayManager.Instance.InitializeGameplay(MenuUIManager.Instance.GetGameSettings());
+        GameSettings gameSettings = new GameSettings(MenuUIManager.Instance.GetGameSettings());
+        GameplayManager.Instance.InitializeGameplay(gameSettings);
     }
 
     public void ShowEndScreenUI()

@@ -15,6 +15,8 @@ public class EndUIManager : MonoBehaviour
     public AudioSource wonGameSFX;
     public AudioSource lostGameSFX;
 
+    public GameObject wonGameConfettiFX;
+
     public static EndUIManager Instance;
 
     private void Awake()
@@ -28,23 +30,25 @@ public class EndUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateEndScreenInfo(bool won, double scorePercentage)
+    public void UpdateEndScreenInfo(int scorePercentage)
     {
-        if(won)
+        if(scorePercentage >= 50) //Minimum 50% to win
         {
             wonRibbon.SetActive(true);
             lostRibbon.SetActive(false);
             
             wonGameSFX.Play();
+            wonGameConfettiFX.SetActive(true);
         }else
         {
             wonRibbon.SetActive(false);
             lostRibbon.SetActive(true);
 
             lostGameSFX.Play();
+            wonGameConfettiFX.SetActive(false);
         }
 
-        scoreText.text = scorePercentage.ToString();
+        scoreText.text = $"{scorePercentage}%";
 
         int stars;
 
