@@ -1,0 +1,18 @@
+{
+    "name": "Eduzo.Games.Tables",
+    "rootNamespace": "Eduzo.Games.Tables",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:123b2c9c9b92d76459bb29f1af6b0863",
+        "GUID:6a7e6bb3803c08c45a43672fe0556437"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+namespace Eduzo.Games.Tables.Data
+{
+    public static class TablesUserDataManager
+    {
+        static readonly string dirPath = Application.persistentDataPath + "/UserResults";
+        static readonly string filePath = dirPath + "/results.json";
+
+        [Serializable]
+        public class UserGameHistory
+        {
+            public List<TablesUserData> data = new List<TablesUserData>();
+        }
+
+        public static void SaveUserData(TablesUserData userData)
+        {
+            UserGameHistory userGameHistory;
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                userGameHistory = JsonUtility.FromJson<UserGameHistory>(json);
+            }
+            else
+            {
+                userGameHistory = new UserGameHistory();
+            }
+
+            userGameHistory.data.Add(userData);
+
+            string outputJson = JsonUtility.ToJson(userGameHistory, true);
+            File.WriteAllText(filePath, outputJson);
+
+            Debug.Log($"Saved results successfully to {filePath}");
+        }
+    }
+}
