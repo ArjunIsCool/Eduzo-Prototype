@@ -16,11 +16,11 @@ namespace Eduzo.Games.Tables.UI
         public Sprite liveOn;
         public Sprite liveOff;
 
-        public TablesCard questionCard;
-        public TablesCard correctCard;
-        public TablesCard wrongCard;
         public TablesCard answerCard;
         public TablesCard gameEndedCard;
+
+        public TablesFeedbackVFX correctVFX;
+        public TablesFeedbackVFX wrongVFX;
 
         public GameObject correctAnswerConfetti;
 

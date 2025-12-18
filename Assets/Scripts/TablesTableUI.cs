@@ -18,6 +18,10 @@ namespace Eduzo.Games.Tables.UI
         public Transform answersHolder;
         public GameObject answerObj;
 
+        [Header("COLORS")]
+        public Color32 correctColor;
+        public Color32 wrongColor;
+
         public event Action OnTablesFeedbackComplete;
 
         public static TablesTableUI Instance;
@@ -74,11 +78,17 @@ namespace Eduzo.Games.Tables.UI
 
             sequence.Play(); //Safety incase it doesnt play automatically
 
-            sequence.onComplete += () => { ResetTable(); }; //Adding question after emptying table
+            sequence.onComplete += () => { ResetTable(); AddQuestion(question); }; //Adding question after emptying table
         }
 
         public void AddQuestion(string question)
         {
+            if (questionsHolder.childCount >= tableSize) //We clear the table first if its full before adding question
+            {
+                ClearTableSmoothlyBeforeNextQuestion(question);
+                return;
+            }
+
             GameObject questionInst = Instantiate(questionObj, questionsHolder);
 
             questionInst.GetComponentInChildren<TMP_Text>().text = question;
@@ -87,19 +97,9 @@ namespace Eduzo.Games.Tables.UI
         }
 
 
-        public IEnumerator DisplayAnswerFeedback(string question, string correctAnswer)
+        public IEnumerator DisplayAnswerFeedback(bool isCorrect, string playerAnswer)
         {
-            if (questionsHolder.childCount >= tableSize)
-            {
-                ClearTableSmoothlyBeforeNextQuestion(question);
-                yield return new WaitForSeconds(2f);
-            }
-
-            AddQuestion(question);
-
-            yield return new WaitForSeconds(1f);
-
-            AddAnswer(correctAnswer);
+            AddAnswer(playerAnswer, isCorrect);
 
             yield return new WaitForSeconds(1f);
 
@@ -108,11 +108,21 @@ namespace Eduzo.Games.Tables.UI
 
 
 
-        public void AddAnswer(string answer)
+        public void AddAnswer(string answer, bool isCorrect)
         {
             GameObject answerInst = Instantiate(answerObj, answersHolder);
 
-            answerInst.GetComponentInChildren<TMP_Text>().text = answer;
+            TMP_Text answerText = answerInst.GetComponentInChildren<TMP_Text>();
+
+            answerText.text = answer;
+
+            if (isCorrect)
+            {
+                answerText.color = correctColor;
+            }else
+            {
+                answerText.color = wrongColor;
+            }
 
             answerInst.transform.GetChild(0).GetComponent<RectTransform>().DOPunchScale(Vector3.one * 1.5f, 0.5f).SetEase(Ease.OutFlash);
         }

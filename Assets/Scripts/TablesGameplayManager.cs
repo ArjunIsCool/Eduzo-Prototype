@@ -171,8 +171,7 @@ namespace Eduzo.Games.Tables.Core
         public void ShowNextQuestion()
         {
             currentQuestion++;
-            TablesGameUIManager.Instance.questionCard.DisplayMessage($"What is {questionSet.data[currentQuestion].questionText}?", -1f);
-            //TablesManager.Instance.AddQuestion(questionSet.data[currentQuestion]);
+            TablesTableUI.Instance.AddQuestion(questionSet.data[currentQuestion].questionText);
 
             timeSinceLastQuestion = 0;
             gameplayTimerRoutine = StartCoroutine(RunGameplayTimer());
@@ -274,11 +273,11 @@ namespace Eduzo.Games.Tables.Core
             TablesUserDataManager.SaveUserData(currentUserData);
         }
 
-        public void OnScannedAnswer(string answer)
+        public void OnScannedAnswer(string scannedAnswer)
         {
-            Debug.Log($"Scanned Answer: {answer}");
+            Debug.Log($"Scanned Answer: {scannedAnswer}");
 
-            if (!int.TryParse(answer, out int result))
+            if (!int.TryParse(scannedAnswer, out int result))
             {
                 Debug.Log("Not a valid answer type, ignoring..");
                 qrController.Reset();
@@ -287,7 +286,6 @@ namespace Eduzo.Games.Tables.Core
 
             cameraShutterSound.Play();
             StopCoroutine(gameplayTimerRoutine);
-            TablesGameUIManager.Instance.questionCard.CloseImmediate();
             cameraPreview.SetActive(false);
 
             bool isCorrect = false;
@@ -295,15 +293,15 @@ namespace Eduzo.Games.Tables.Core
             if (result == questionSet.data[currentQuestion].answer)
             {
                 isCorrect = true;
-                TablesGameUIManager.Instance.correctCard.DisplayMessage("CORRECT!", 2f);
                 TablesGameUIManager.Instance.PlayCorrectAnswerConfetti();
+                TablesGameUIManager.Instance.correctVFX.PlayFeedbackVFX();
                 currentScore++;
                 correctAnswerSFX.Play();
             }
             else
             {
                 isCorrect = false;
-                TablesGameUIManager.Instance.wrongCard.DisplayMessage("WRONG!", 2f);
+                TablesGameUIManager.Instance.wrongVFX.PlayFeedbackVFX();
                 if (currentGameSettings.gameMode == TablesGameSettings.GameMode.TEST)
                 {
                     LoseLife();
@@ -311,23 +309,23 @@ namespace Eduzo.Games.Tables.Core
                 wrongAnswerSFX.Play();
             }
 
-            AddQuestionSummaryData(answer, isCorrect);
+            AddQuestionSummaryData(scannedAnswer, isCorrect);
 
-            StartCoroutine(DisplayAnswerFeedback(isCorrect));
+            StartCoroutine(DisplayAnswerFeedback(isCorrect, scannedAnswer));
         }
 
-        IEnumerator DisplayAnswerFeedback(bool answeredCorrectly)
+        IEnumerator DisplayAnswerFeedback(bool answeredCorrectly, string playerAnswer)
         {
             string question = questionSet.data[currentQuestion].questionText;
-            string answer = questionSet.data[currentQuestion].answer.ToString();
+            string correctAnswer = questionSet.data[currentQuestion].answer.ToString();
 
             yield return new WaitForSeconds(3f);
 
-            TablesGameUIManager.Instance.answerCard.DisplayMessage($"{question} = {answer}", 2f);
+            TablesGameUIManager.Instance.answerCard.DisplayMessage($"{question} = {correctAnswer}", 2f);
 
             yield return new WaitForSeconds(3f);
 
-            StartCoroutine(TablesTableUI.Instance.DisplayAnswerFeedback(question, answer));
+            StartCoroutine(TablesTableUI.Instance.DisplayAnswerFeedback(answeredCorrectly, playerAnswer));
         }
     }
 }
